@@ -13,7 +13,7 @@ fn valid_rows_cols(board: &Vec<Vec<char>>) -> bool {
             vert.push(board[j][i]);
         }
         
-        if !valid_list(horiz) || !valid_list(vert) { return false; }
+        if !valid_list(&horiz) || !valid_list(&vert) { return false; }
     }
     
     true
@@ -28,17 +28,17 @@ fn valid_squares(board: &Vec<Vec<char>>) -> bool {
                 for j in 0..3 { square.push(board[row+i][col+j]); }
             }
 
-            if !valid_list(square) { return false; }
+            if !valid_list(&square) { return false; }
         }
     }
 
     true
 }
 
-fn valid_list(list: Vec<char>) -> bool {
+fn valid_list(list: &Vec<char>) -> bool {
     let mut seen = HashSet::new();
 
-    for c in list {
+    for &c in list {
         if c != '0' && seen.contains(&c) { return false; }
         seen.insert(c);
     }
