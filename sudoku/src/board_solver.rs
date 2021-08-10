@@ -1,35 +1,31 @@
 use crate::board_checker;
+use crate::board_utils::Board;
 
-/// Takes in a board, and returns either a solved one or None if impossible
-pub fn solve(board: Vec<Vec<char>>) -> Option<Vec<Vec<char>>> {
-    for start in '1'..='9' {
-        if let Some(v) = solve_helper(board.clone(), 0, 0, start) {
-            return Some(v);
-        }
-    }
-    return None
+/// Takes in a board, and returns true if the board was
+/// solved, and false otherwise
+pub fn solve(board: &mut Board) -> bool {
+    solve_helper(board, 0, 0)
 }
 
-/// Takes in the board, current row, current col, and a guess, and returns either solved board 
-/// from this state, or None if it is impossible
-fn solve_helper(mut board: Vec<Vec<char>>, row: usize, col: usize, guess: char) -> Option<Vec<Vec<char>>> {
-    if row == 9 { return Some(board) }
+/// Takes in the board, current row, current col, and returns true 
+/// if board was solved, and false if it couldn't be solved
+fn solve_helper(board: &mut Board, row: usize, col: usize) -> bool {
+    if row == 9 { return true; }
     
     let (next_row, next_col) = match col {
         8 => (row+1, 0),
         _ => (row, col+1),
     };
 
-    if board[row][col] != '0' { return solve_helper(board, next_row, next_col, guess); }
-
-    board[row][col] = guess;
-    if !board_checker::valid_board(&board) { return None; }
+    if board[row][col] != '0' { return solve_helper(board, next_row, next_col); }
 
     for g in '1'..='9' {
-        if let Some(v) = solve_helper(board.clone(), next_row, next_col, g) {
-            return Some(v);
+        board[row][col] = g;
+        if board_checker::valid_board(&board) && solve_helper(board, next_row, next_col) { 
+            return true;
         }
     }
     
-    None
+    board[row][col] = '0';
+    false
 }

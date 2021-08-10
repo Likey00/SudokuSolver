@@ -1,15 +1,16 @@
 use std::collections::HashSet;
+use crate::board_utils::Board;
 
 /// Returns true if all rows, columns, and the 9
 /// 3x3 sudoku squares have no nonzero repeats within 
 /// them, false otherwise
-pub fn valid_board(board: &Vec<Vec<char>>) -> bool {
+pub fn valid_board(board: &Board) -> bool {
     valid_rows_cols(board) && valid_squares(board)
 }
 
 /// Returns true if all rows and columns have no nonzero
 /// repeats, false otherwise
-fn valid_rows_cols(board: &Vec<Vec<char>>) -> bool {
+fn valid_rows_cols(board: &Board) -> bool {
     for i in 0..9 {
         let (mut horiz, mut vert) = (Vec::new(), Vec::new());
         
@@ -26,7 +27,7 @@ fn valid_rows_cols(board: &Vec<Vec<char>>) -> bool {
 
 /// Returns true if 3x3 sudoku squares have no nonzero
 /// repeats, false otherwise
-fn valid_squares(board: &Vec<Vec<char>>) -> bool {
+fn valid_squares(board: &Board) -> bool {
     for row in (0..9).step_by(3) {
         for col in (0..9).step_by(3) {
             let mut square = Vec::new();

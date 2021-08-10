@@ -6,18 +6,15 @@ fn main() {
     println!("Please enter your sudoku board in 9 lines, 9 characters per line.");
     println!("Numbers which are known should be input where they are, and empty spaces should be denoted by a 0.");
 
-    let board = match board_utils::read_board() {
-        Some(vec) => vec,
-        None => {
-            println!("Terminating due to invalid board");
-            std::process::exit(1);
-        }
+    let mut board = match board_utils::read_board() {
+        Ok(board) => board,
+        Err(msg) => panic!("{}", msg),
     };
 
     println!();
-
-    match board_solver::solve(board) {
-        Some(v) => board_utils::print_board(&v),
-        None => println!("This board has no solution!"),
+    
+    if board_solver::solve(&mut board) { 
+        board_utils::print_board(&board)
     }
+    else { println!("This board has no solution!"); }
 }

@@ -1,9 +1,11 @@
 use std::io;
 
+pub type Board = Vec<Vec<char>>;
+
 /// Reads in a board from input line by line and
-/// returns it as a Vec<Vec<char>>, or None if
+/// returns it as a Board, or Err if
 /// something went wrong
-pub fn read_board() -> Option<Vec<Vec<char>>> {
+pub fn read_board() -> Result<Board, String> {
     let mut board = vec![vec!['0'; 9]; 9];
     
     for i in 0..9 {
@@ -13,9 +15,7 @@ pub fn read_board() -> Option<Vec<Vec<char>>> {
             Ok(10) => {
                 input = input.trim().to_string();
                 if !input.chars().all(char::is_numeric) { 
-                    println!();
-                    println!("Please enter only numeric characters");
-                    return None; 
+                    return Err(String::from("Non-numeric characters in input"));
                 }
                 
                 for j in 0..9 {
@@ -23,24 +23,21 @@ pub fn read_board() -> Option<Vec<Vec<char>>> {
                 }
             }
 
-            Ok(n) => {
-                println!();
-                println!("You entered {} characters on line {}, but we need 9", n-1, i+1);
-                return None;
+            Ok(_) => {
+                return Err(String::from("Incorrect number of characters"));
             }
             
             Err(_) => {
-                println!("Error reading string!");
-                return None;
+                return Err(String::from("Error reading string"));
             }
         }
     }
 
-    Some(board)
+    Ok(board)
 }
 
 /// Nicely prints out a given board
-pub fn print_board(board: &Vec<Vec<char>>) {
+pub fn print_board(board: &Board) {
     for i in 0..9 {
         print!(" ");
         for j in 0..9 {
