@@ -1,5 +1,8 @@
 use std::io;
 
+/// Reads in a board from input line by line and
+/// returns it as a Vec<Vec<char>>, or None if
+/// something went wrong
 pub fn read_board() -> Option<Vec<Vec<char>>> {
     let mut board = vec![vec!['0'; 9]; 9];
     
@@ -36,6 +39,7 @@ pub fn read_board() -> Option<Vec<Vec<char>>> {
     Some(board)
 }
 
+/// Nicely prints out a given board
 pub fn print_board(board: &Vec<Vec<char>>) {
     for i in 0..9 {
         print!(" ");

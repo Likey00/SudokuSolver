@@ -1,9 +1,14 @@
 use std::collections::HashSet;
 
+/// Returns true if all rows, columns, and the 9
+/// 3x3 sudoku squares have no nonzero repeats within 
+/// them, false otherwise
 pub fn valid_board(board: &Vec<Vec<char>>) -> bool {
     valid_rows_cols(board) && valid_squares(board)
 }
 
+/// Returns true if all rows and columns have no nonzero
+/// repeats, false otherwise
 fn valid_rows_cols(board: &Vec<Vec<char>>) -> bool {
     for i in 0..9 {
         let (mut horiz, mut vert) = (Vec::new(), Vec::new());
@@ -19,6 +24,8 @@ fn valid_rows_cols(board: &Vec<Vec<char>>) -> bool {
     true
 }
 
+/// Returns true if 3x3 sudoku squares have no nonzero
+/// repeats, false otherwise
 fn valid_squares(board: &Vec<Vec<char>>) -> bool {
     for row in (0..9).step_by(3) {
         for col in (0..9).step_by(3) {
@@ -35,6 +42,8 @@ fn valid_squares(board: &Vec<Vec<char>>) -> bool {
     true
 }
 
+/// Returns true if the given vector has no repeats,
+/// false otherwise
 fn valid_list(list: &Vec<char>) -> bool {
     let mut seen = HashSet::new();
 
